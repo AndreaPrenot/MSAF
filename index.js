@@ -1,12 +1,32 @@
 const fastify = require('fastify')()
 const { InfluxDB } = require('@influxdata/influxdb-client')
 
-const token = 'VSs4zsQwbDr_Wb0uAEnROay7eiSyBiy7BFhJapknChSVwehdl3WbIX84W7EoGS0fYMpKZBrbTSfBzfRqDoL2zA=='
-const org = 'MSAF'
-const bucket = 'Silos'
 
 const client = new InfluxDB({ url: 'http://localhost:8086', token: token })
 
+const redis = require("redis");
+const client = redis.createClient();
+
+client.on("error", function (error) {
+    console.error(error);
+});
+
+const redis = require("redis");
+let redisNotReady = true;
+let redisClient = redis.createClient({
+    host: '127.0.0.1',
+    port: 6379
+});
+redisClient.on("error", (err) => {
+   console.log("error", err)
+});
+redisClient.on("connect", (err) => {
+    console.log("connect");
+});
+redisClient.on("ready", (err) => {
+    redisNotReady = false;
+    console.log("ready");
+});
 
 
 let temperaturas1;
@@ -98,69 +118,56 @@ fastify.post('/', (req, reply) => {
         }
     }
 
-        const { Point } = require('@influxdata/influxdb-client')
-        const writeApi = client.getWriteApi(org, bucket)
-        writeApi.useDefaultTags({ host: 'host1' })
-    
-        point = new Point('silos').floatField('temperaturas1', temperaturas1);
-        point.floatField('livellos1', silos1)
-    
-        point.floatField('temperaturas2', temperaturas2);
-        point.floatField('livellos2', silos2)
-    
-        point.floatField('temperaturas3', temperaturas3);
-        point.floatField('livellos3', silos3)
-    
-        point.floatField('temperaturas4', temperaturas4);
-        point.floatField('livellos4', silos4)
-    
-        point.floatField('temperaturas5', temperaturas5);
-        point.floatField('livellos5', silos5)
-    
-        point.floatField('temperaturas6', temperaturas6);
-        point.floatField('livellos6', silos6)
-    
-        point.floatField('temperaturas7', temperaturas7);
-        point.floatField('livellos7', silos7)
-    
-        writeApi.writePoint(point)
-        writeApi
-            .close()
-            .then(() => {
-                console.log('FINISHED')
-            })
-            .catch(e => {
-                console.error(e)
-                console.log('\\nFinished ERROR')
-            })
+    redisClient.rpush(['Silos1', silos1], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas1', temperaturas1], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos2', silos2], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas2', temperaturas2], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos3', silos3], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas3', temperaturas3], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos4', silos4], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas4', temperaturas4], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos5', silos5], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas5', temperaturas5], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos6', silos6], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas6', temperaturas6], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
+    redisClient.rpush(['Silos7', silos7], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+    redisClient.rpush(['Temperaturas7', temperaturas7], function (err, reply) {
+        console.log("Queue Length", reply);
+    });
+
 });
-
-
-
-
-
-
-
-
-/*
-fastify.get('/test', (req, reply) => {
-    const point = new Point('mem')
-    .floatField('temperatura', temperaturas1)
-    .floatField('livello', silos1)
-    silos1 = 0;
-writeApi.writePoint(point)
-writeApi
-    .close()
-    .then(() => {
-        console.log('FINISHED')
-    })
-    .catch(e => {
-        console.error(e)
-        console.log('\\nFinished ERROR')
-    })
-});*/
-
-
 
 
 fastify.listen(3000, err => {
