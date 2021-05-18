@@ -1,0 +1,25 @@
+{
+  "name": "lezionequattro",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@influxdata/influxdb-client": "^1.13.0",
+    "ejs": "^3.1.6",
+    "fastify": "^3.12.0",
+    "fastify-cookie": "^5.1.0",
+    "fastify-formbody": "^5.0.0",
+    "fastify-static": "^4.0.1",
+    "nodemon": "^2.0.7",
+    "point-of-view": "^4.13.0",
+    "redis": "^3.1.2",
+    "uuid": "^8.3.2"
+  }
+}
