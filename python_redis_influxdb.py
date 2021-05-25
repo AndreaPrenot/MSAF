@@ -174,8 +174,5 @@ while True:
     
     write_api = client.write_api()
     write_api.write(bucket, org, point)
-
-    #5 secondi di attesa
     
     print("Tutto è funzionato correttamente, 5 secondi per il prossimo oggetto")
-    time.sleep( 5 )
