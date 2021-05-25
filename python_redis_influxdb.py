@@ -22,7 +22,7 @@ def conninflux():
     except ValueError:
         print("Connessione ad Influx scaduta")
         #5 secondi di attesa
-        time.sleep( 5 )
+        time.sleep( 10 )
         conninflux()
 
 #Funzione di connessione a Redis
@@ -35,14 +35,14 @@ def connredis():
         while (r.llen('Silos')==0):
             print("Nessun elemento è presente in coda")
             #5 secondi di attesa nel caso non ci fossero elementi in coda
-            time.sleep( 5 )
+            time.sleep( 10 )
         # RPOP dalla lista
         dato = r.lpop('Silos')
         return dato
     except ValueError:
         print("Connessione ad Influx scaduta")
         #5 secondi di attesa
-        time.sleep( 5 )
+        time.sleep( 10 )
         connredis()
 
 
